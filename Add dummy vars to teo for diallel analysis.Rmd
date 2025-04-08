@@ -1,0 +1,42 @@
+---
+title: "Make dummy variables for teosinte diallel"
+author: "JBH"
+date: "June 4, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Set the path to files and call libraries
+```{r}
+library(tidyverse)
+path = 'Q:/My Drive/Teo and landrace/Teo/Diallel/'
+```
+
+Read in phenotype data set also used for GWAS, variance component estimation, etc.
+We need to add some dummy variables to code for cross combinations, reciprocals, etc. to allow for diallel analysis
+```{r}
+LR = read.csv('Q:/My Drive/Teo and landrace/Teo/Rare Allele Scan/teo_imp_02102017_traits-2.csv', stringsAsFactors = F) %>%
+  rename(Mother = GBSMom,
+         Father = GBSDad,
+         Type = Cross) %>%
+  mutate(v = Mother <= Father,
+         com = ifelse(v, paste0(Mother, "x", Father), paste0(Father, "x", Mother)),
+         #dr = a dummy variable to distinguish reciprocal crosses if combin is fit as model
+         dr = ifelse(v, 1, -1),
+         Type = case_when(
+           Type == "self" ~ "Self",
+           Type == "outcross" ~ "Outcross",
+           TRUE ~ Type),
+         #TypeYear combines type and year so we can specify unique variances for all four combinations
+         TypeYear = paste0(Type, Year)) %>%
+  select(-v) 
+```
+
+Write to new file to use for diallel analysis
+```{r}
+write.csv(LR, file = paste0(path, 'teo_imp_02102017_traits-2_for_diallel.csv'), row.names = F, quote = F)
+```
+
