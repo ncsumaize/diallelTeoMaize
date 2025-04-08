@@ -1,2 +1,2 @@
 # diallelTeoMaize
-data sets and R and asreml scripts to analyze individual plant teosinte and landrace maize data
+Data sets and R and asreml scripts to analyze individual plant teosinte and landrace maize data corresponding to the publication "Domestication reshaped the genetic basis of inbreeding depression in a maize landrace compared to its wild relative, teosinte" by Samayoa et al. 2021. https://doi.org/10.1371/journal.pgen.1009797. The R markdown script modify the original data sets to add indicator columns for parental effects, reciprocal effects, etc. The asreml .as scripts are used for ASReml standalone software to fit linear mixed models to estimate GCA, SCA, etc. 
